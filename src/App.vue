@@ -32,7 +32,6 @@ const toggleTheme = () => {
 
 <template>
 
-  <Button @click="toggleTheme" :label="label" />
   <RouterView />
 </template>
 
