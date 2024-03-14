@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import { useToast } from "primevue/usetoast";
-import NavBar from '@/components/NavBar.vue';
+import ThemeToggler from '@/components/ThemeToggler.vue';
+
 const toast = useToast();
-
-
 const user = ref({username: "", password: "", password_confirmation: ""}); 
 const isUnameInvalid = ref(false);
 const isPasswordInvalid = ref(false);
 const isRepeatPasswordInvalid = ref(false);
 const submitButtonDisabled = ref(true);
-
-
 
 const usernameChange = () => {
     isUnameInvalid.value = !user.value.username;
@@ -25,7 +21,7 @@ const passwordChange = () => {
 }
 
 const repeatPasswordChange = () => {
-    isRepeatPasswordInvalid.value = !(user.value.password === user.value.password_confirmation);
+    isRepeatPasswordInvalid.value = user.value.password !== user.value.password_confirmation;
     submitButtonDisabled.value = (user.value.username.length < 1 || user.value.password.length < 1 || (user.value.password !== user.value.password_confirmation));  
 }
 
@@ -45,16 +41,15 @@ const submitForm = () => {
 </script>
 
 <template>
-
-<NavBar />
-    <Toast />
+<ThemeToggler />
+<Toast />
 <div class="center">
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
         <div class="text-center mb-5">
             <img src="https://blocks.primevue.org/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" />
             <div class="text-900 text-3xl font-medium mb-3">Register</div>
             <span class="text-600 font-medium line-height-3">Already have an account?</span>
-            <router-link to="/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Login Here!</router-link>
+            <router-link to="/" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Login Here!</router-link>
         </div>
 
         <div>

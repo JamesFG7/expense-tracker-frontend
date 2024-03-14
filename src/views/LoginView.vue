@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import { useToast } from "primevue/usetoast";
-import NavBar from '@/components/NavBar.vue';
+import ThemeToggler from '@/components/ThemeToggler.vue';
+
 const toast = useToast();
-
-
 const user = ref({username: "", password: ""}); 
 const isUnameInvalid = ref(false);
 const isPasswordInvalid = ref(false);
 const submitButtonDisabled = ref(true);
-
+const checked1 = ref(true);
 
 const usernameChange = () => {
     isUnameInvalid.value = !user.value.username;
@@ -25,12 +23,10 @@ const passwordChange = () => {
 
 const submitForm = () => {
     console.log(user.value);
-    
     if(user.value.username !== "admin" && user.value.password !== "admin"){
         toast.add({ severity: 'error', summary: 'Invalid Input', detail: 'Invalid Username and Password', life: 30000 });
     }
     else {
-        
         toast.add({ severity: 'success', summary: 'Success', detail: 'Redirecting you to homepage', life: 30000 });
     }
 }
@@ -39,26 +35,7 @@ const submitForm = () => {
 
 
 <template>
-    <NavBar />
-<!-- <h1 class="title">Login</h1>
-<FloatLabel>
-    <InputText id="username" v-model="user.username" :invalid="isUnameInvalid" @input="usernameChange"/>
-    <label for="username">Username</label>
-</FloatLabel>
-<div class="error-message" v-if="isUnameInvalid">Username can't be empty</div>
-<FloatLabel>
-    <Password id="password" v-model="user.password" :invalid="isPasswordInvalid" @input="passwordChange" toggleMask :feedback="false"/>
-    <label for="password">Password</label>
-</FloatLabel>
-
-<div class="error-message" v-if="isPasswordInvalid">Password can't be empty</div>
-
-<Toast />
-<Button label="Login" icon="pi pi-angle-double-right" @click="submitForm" :disabled="submitButtonDisabled"/>
-
- -->
-
-
+<ThemeToggler />
 <Toast />
 <div class="center">
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
@@ -80,13 +57,6 @@ const submitForm = () => {
                 <label for="password">Password</label>
             </FloatLabel>
             <div class="error-message" v-if="isPasswordInvalid">Password can't be empty</div>
-            <div class="flex align-items-center justify-content-between mb-6 mt-3">
-                <div class="flex align-items-center">
-                    <Checkbox id="rememberme1" :binary="true" v-model="checked1" class="mr-2"></Checkbox>
-                    <label for="rememberme1">Remember me</label>
-                </div>
-                <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
-            </div>
             <Button label="Sign In" icon="pi pi-user" class="w-full" @click="submitForm" :disabled="submitButtonDisabled"></Button>
         </div>
     </div>
