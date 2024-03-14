@@ -5,10 +5,10 @@ import router from './router'
 import { plugin, defaultConfig } from '@formkit/vue'
 
 
-
 import './assets/main.css';
 import 'primeicons/primeicons.css';
 import "primeflex/primeflex.css";
+import './assets/base.scss';
 
 
 
