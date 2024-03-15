@@ -3,41 +3,39 @@ import {onMounted, ref} from "vue";
 import {usePrimeVue} from "primevue/config";
 import Button from "primevue/button";
 
-
-
 const PrimeVue = usePrimeVue();
 
-const currentTheme = ref(localStorage.getItem('theme'));
-const label = ref((localStorage.getItem('theme') === 'aura-dark-purple') ? "Light" : "Dark");
-const icon = ref((currentTheme.value === "Dark") ? "pi pi-moon" : "pi pi-sun");
-onMounted( () => {
+const darkTheme = "aura-dark-purple";
+const lightTheme = "aura-light-purple";
+const currentTheme = ref(localStorage.getItem('theme') || darkTheme);
+const icon = ref((currentTheme.value === darkTheme) ? "pi pi-moon" : "pi pi-sun");
+const isDarkTheme = ref(localStorage.getItem("theme") === darkTheme);
+const label = ref(isDarkTheme.value ? lightTheme : darkTheme);
+
+onMounted(() => {
   toggleTheme();
 });
 
 const toggleTheme = () => {
-  let nextTheme : String;
-  if (currentTheme.value === 'aura-dark-purple') {
-    nextTheme = 'aura-light-purple';
+  let nextTheme: string;
+  if (currentTheme.value === darkTheme) {
+    nextTheme = lightTheme;
+  } else {
+    nextTheme = darkTheme;
   }
-  else {
-    nextTheme = 'aura-dark-purple';
-  }
-  PrimeVue.changeTheme(currentTheme.value, nextTheme, 'dark-theme-link', () => {console.log(currentTheme)});
-  localStorage.setItem('theme', currentTheme.value);
-  label.value = (localStorage.getItem('theme') === 'aura-dark-purple') ? "Light" : "Dark"
-    icon.value = (currentTheme.value === "aura-dark-purple") ? "pi pi-moon" : "pi pi-sun";
+  PrimeVue.changeTheme(currentTheme.value, nextTheme, "dark-theme-link");
+  localStorage.setItem("theme", currentTheme.value);
+  label.value = isDarkTheme.value ? lightTheme : darkTheme;
+  icon.value = currentTheme.value === darkTheme ? "pi pi-moon" : "pi pi-sun";
   currentTheme.value = nextTheme;
-}
+};
 </script>
-
-
 
 <template>    
     <div class="toggler-container">
         <Button @click="toggleTheme" outlined severity="contrast"  :icon="icon" aria-label="Filter" />
     </div>
 </template>
-
 
 <style lang="scss" scoped>
 button {

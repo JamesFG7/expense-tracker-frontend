@@ -8,7 +8,6 @@ const user = ref({username: "", password: ""});
 const isUnameInvalid = ref(false);
 const isPasswordInvalid = ref(false);
 const submitButtonDisabled = ref(true);
-const checked1 = ref(true);
 
 const usernameChange = () => {
     isUnameInvalid.value = !user.value.username;
