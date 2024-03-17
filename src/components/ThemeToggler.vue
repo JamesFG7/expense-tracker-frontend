@@ -32,19 +32,21 @@ const toggleTheme = () => {
 </script>
 
 <template>    
-    <div class="toggler-container">
-        <Button @click="toggleTheme" outlined severity="contrast"  :icon="icon" aria-label="Filter" />
+    <div class="toggler-container" @click="toggleTheme" >
+      <i :class="icon" > </i>
+      <div class="text">Toggle Theme</div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-button {
-    margin-top: 0;
-}
 
 .toggler-container {
     display: flex;
     justify-content: flex-end;
-    margin: 0.4em;
+    cursor: pointer;
+    align-items: center;
+	i {
+		margin-right: 10px;
+	}
 }
 </style>
