@@ -232,5 +232,6 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, { ripple: true    });
 app.use(plugin, defaultConfig);
+app.use(ConfirmationService)
 
 app.mount('#app')
