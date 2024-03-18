@@ -41,7 +41,11 @@ const submitForm = () => {
 </script>
 
 <template>
-<ThemeToggler />
+    <div class="flex-item-right">
+        <div class="theme-toggler-container">
+            <ThemeToggler />
+        </div>
+    </div>
 <Toast />
 <div class="center">
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
@@ -89,5 +93,13 @@ const submitForm = () => {
 .center {
     display: flex;
     justify-content: center;
+}
+.theme-toggler-container {
+    padding: 15px 15px;
+    margin: 10px;
+    background: var(--text-color);
+    color:var(--surface-card);
+    width: fit-content;
+    border-radius: 10px;
 }
 </style>

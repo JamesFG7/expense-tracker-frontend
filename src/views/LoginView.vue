@@ -34,33 +34,36 @@ const submitForm = () => {
 
 
 <template>
-<ThemeToggler />
-<Toast />
-<div class="center">
-    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-        <div class="text-center mb-5">
-            <img src="https://blocks.primevue.org/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" />
-            <div class="text-900 text-3xl font-medium mb-3">Login</div>
-            <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-            <router-link to="/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign Up Here!</router-link>
-        </div>
-
-        <div>
-            <FloatLabel>
-                <InputText class="w-full" id="username" v-model="user.username" :invalid="isUnameInvalid" @input="usernameChange"/>
-                <label for="username">Username</label>
-            </FloatLabel>
-            <div class="error-message" v-if="isUnameInvalid">Username can't be empty</div>
-            <FloatLabel>
-                <InputText type="password" class="w-full" id="password" v-model="user.password" :invalid="isPasswordInvalid" @input="passwordChange" toggleMask :feedback="false"/>
-                <label for="password">Password</label>
-            </FloatLabel>
-            <div class="error-message" v-if="isPasswordInvalid">Password can't be empty</div>
-            <Button label="Sign In" icon="pi pi-user" class="w-full" @click="submitForm" :disabled="submitButtonDisabled"></Button>
+    <div class="flex-item-right">
+        <div class="theme-toggler-container">
+            <ThemeToggler />
         </div>
     </div>
-</div>
+    <Toast />
+    <div class="center">
+        <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+            <div class="text-center mb-5">
+                <img src="https://blocks.primevue.org/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" />
+                <div class="text-900 text-3xl font-medium mb-3">Login</div>
+                <span class="text-600 font-medium line-height-3">Don't have an account?</span>
+                <router-link to="/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign Up Here!</router-link>
+            </div>
 
+            <div>
+                <FloatLabel>
+                    <InputText class="w-full" id="username" v-model="user.username" :invalid="isUnameInvalid" @input="usernameChange"/>
+                    <label for="username">Username</label>
+                </FloatLabel>
+                <div class="error-message" v-if="isUnameInvalid">Username can't be empty</div>
+                <FloatLabel>
+                    <InputText type="password" class="w-full" id="password" v-model="user.password" :invalid="isPasswordInvalid" @input="passwordChange" toggleMask :feedback="false"/>
+                    <label for="password">Password</label>
+                </FloatLabel>
+                <div class="error-message" v-if="isPasswordInvalid">Password can't be empty</div>
+                <Button label="Sign In" icon="pi pi-user" class="w-full" @click="submitForm" :disabled="submitButtonDisabled"></Button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style lang="scss">
@@ -79,5 +82,13 @@ const submitForm = () => {
 .center {
     display: flex;
     justify-content: center;
+}
+.theme-toggler-container {
+    padding: 15px 15px;
+    margin: 10px;
+    background: var(--text-color);
+    color:var(--surface-card);
+    width: fit-content;
+    border-radius: 10px;
 }
 </style>

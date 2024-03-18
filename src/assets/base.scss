@@ -7,6 +7,10 @@
     border-radius: 0;
     padding: 15px 20px;
 }
+.flex-item-right {
+    display: flex;
+    justify-content: flex-end;
+}
 
 body,html {
     padding: 0;
