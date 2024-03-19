@@ -2,6 +2,7 @@
     import { ref } from 'vue';
 	import NavBar from "@/components/NavBar.vue";
 	import Transactions from "@/components/Transactions.vue";
+	import Summary from "@/components/Summary.vue";
 
 	const active = ref(0);
 	const items = ref([
@@ -16,7 +17,7 @@
 		<TabMenu v-model:activeIndex="active" :model="items" />
 	</div>
 	<div v-if="active == 0" class="tabmenu-overlay">
-		Summary
+		<Summary />
 	</div>
 	<div v-if="active == 1" class="tabmenu-overlay">
 		<Transactions />

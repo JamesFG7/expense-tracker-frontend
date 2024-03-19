@@ -2,23 +2,27 @@
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import {ref} from "vue";
+import TransactionDialog from "./TransactionDialog.vue";
+import { useTransactionStore } from '@/stores/transaction';
 
 const confirm = useConfirm();
 const toast = useToast();
+const transaction = useTransactionStore()
 
-const updateDialogVisible = ref(false);
+
+
 const products = [{
 		id: 1,
 		date: "Tuesday, 28 Feb 2023",
 		type: "Expenses",
 		category: "Entertainment",
-		amount: 50,
+		amount: 200,
 	}, {
 		id: 2,
 		date: "Tuesday, 28 Feb 2023",
-		type: "Expenses",
+		type: "Income",
 		category: "Entertainment",
-		amount: 50,
+		amount: 50000,
 }];
 const categories = ref([
 	{ name: 'Entertainment'},
@@ -30,6 +34,8 @@ const date = ref();
 const amount = ref();
 const type = ref();
 const category = ref();
+const updateDialogVisible = ref(false);
+const addDialogVisible = ref(false);
 
 const confirmDelete = (id : number) => {
 	confirm.require({
@@ -87,15 +93,21 @@ const confirmDelete = (id : number) => {
 			<Button label="Save" severity="primary" @click="updateDialogVisible = false" autofocus />
 		</template>
 	</Dialog>
-	<div class="title">
+	<TransactionDialog :id="2" :visibility="true"/>
+	<div class="dashboard-header">
+		<div class="title">
 		Transaction History
+		</div>
+		<Button label="Add Transaction" icon="pi pi-plus" @click="addDialogVisible = true" />
+	
 	</div>
 	<div class="card">
 		<DataTable size="large" :value="products" tableStyle="min-width: 50rem" lazy>
-			<Column field="date" header="Date"</Column>
+			<Column field="date" header="Date"></Column>
 			<Column field="type" header="Type">
 				<template #body="slotProps">
-					<i class="pi pi-arrow-up type-icon"></i>
+					<i  v-if="slotProps.data.type === 'Expenses'" class="pi pi-arrow-up type-icon expense"></i>
+					<i  v-else class="pi pi-arrow-down type-icon income"></i>
 					{{ slotProps.data.type}}
 				</template>
 			</Column>
@@ -108,7 +120,9 @@ const confirmDelete = (id : number) => {
 					</div>
 				</template>
 				<template #body="slotProps">
-					{{ slotProps.data.amount }}1
+					<div class="amount" :style="{ color: slotProps.data.type === 'Expenses' ? '#dc2626' : '#059669' }">
+						{{ slotProps.data.type === "Expenses" ? "-" : "+" }}₱{{ slotProps.data.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}}
+					</div>
 				</template>
 			</Column>
 			<Column field="action" header="Actions">
@@ -124,6 +138,19 @@ const confirmDelete = (id : number) => {
 </template>
 
 <style lang="scss">
+.dashboard-header {
+	display: flex;
+	margin: 15px 0;
+	align-items: center;
+	justify-content: space-between;
+	.title {
+	font-size: 27px;
+	}
+	button {
+		padding: 10px 10px;
+	}
+
+}
 .type-icon {
 	padding: 5.5px;
 	font-size: 10.5px;
@@ -140,13 +167,6 @@ table.p-datatable-table {
 			th {
 				background: var(--text-color);
 				color: var(--surface-card);
-			}
-		}
-	}
-	tbody.p-datatable-tbody {
-		tr {
-			td {
-
 			}
 		}
 	}
@@ -181,8 +201,28 @@ table.p-datatable-table {
 		width:100%;
 		margin: 5px 0 7px 0;
 	}
+	.p-selectbutton {
+		background: none;
+		margin: 5px 0 7px 0;
+		padding: 0;
+		div {
+			width: 50%;
+			background: none;
+			border: none;
+		}
+		div:nth-child(1){
+		}
+		
+		div:nth-child(1){
+		}
+	}
 }
-
+.p-dialog-footer {
+	padding: 1rem 1.5rem 1.5rem 1.5rem;
+	button {
+		width: 100%;
+	}
+}
 .p-dropdown {
 	width: 100%;
 	background: none;
