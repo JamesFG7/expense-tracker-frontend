@@ -1,15 +1,22 @@
 <script setup lang="ts">
+import dateFormat from "dateformat";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import {onMounted, ref} from "vue";
 import TransactionDialog from "./TransactionDialog.vue";
 import { useTransactionStore } from '@/stores/transaction';
+import {onMounted, ref} from "vue";
 
+
+const tableProps = defineProps<{page: string}>();
 const confirm = useConfirm();
 const toast = useToast();
 const transaction = useTransactionStore()
 const id = ref<number | undefined>();
 
+
+function formatDate (date: Date) : string {
+	return dateFormat(date, "dddd, dd mmm yyyy");
+}
 const confirmDelete = (id : number) => {
 	confirm.require({
 		message: 'Do you want to delete this record?',
@@ -25,7 +32,19 @@ const confirmDelete = (id : number) => {
 		},
 	});
 };
+const updateButton = (idParam: number) => {
+	transaction.toggleVisibility();
+	transaction.emptyTransactionPlaceholder();
+	transaction.transactionPlaceholder = transaction.transactions[transaction.transactions.findIndex((transaction: { id: number }) => transaction.id === idParam)];
+	id.value = idParam;
+}
 
+const addButton = () => {
+	transaction.emptyTransactionPlaceholder();
+	id.value = undefined;
+	transaction.toggleVisibility();
+
+}
 onMounted(() => {
 	transaction.setTransactions();
 })
@@ -38,14 +57,17 @@ onMounted(() => {
 	<TransactionDialog :id='id'/>
 	<div class="dashboard-header">
 		<div class="title">
-		Transaction History
+			Transaction History
 		</div>
-		<Button label="Add Transaction" icon="pi pi-plus" @click="transaction.toggleVisibility(); id = undefined;" />
-	
+		<Button label="Add Transaction" v-if="page==='transaction'" icon="pi pi-plus" @click="addButton" />
 	</div>
 	<div class="card">
 		<DataTable size="large" :value="transaction.transactions" tableStyle="min-width: 50rem" lazy>
-			<Column field="date" header="Date"></Column>
+			<Column field="date" header="Date">
+				<template #body="slotProps">
+					{{ formatDate(slotProps.data.date)}}
+				</template>
+			</Column>
 			<Column field="type" header="Type">
 				<template #body="slotProps">
 					<i  v-if="slotProps.data.type === 'Expenses'" class="pi pi-arrow-up type-icon expense"></i>
@@ -67,10 +89,10 @@ onMounted(() => {
 					</div>
 				</template>
 			</Column>
-			<Column field="action" header="Actions">
+			<Column field="action" header="Actions" v-if="page==='transaction'">
 				<template #body="slotProps">
 					<ButtonGroup>
-						<Button  @click="transaction.toggleVisibility(); id = slotProps.data.id;"  label="Edit" icon="pi pi-pencil" severity="success" />
+						<Button  @click="updateButton(slotProps.data.id)"  label="Edit" icon="pi pi-pencil" severity="success" />
 						<Button @click="confirmDelete(slotProps.data.id)" label="Delete" icon="pi pi-trash"  severity="danger"/>
 					</ButtonGroup>
 				</template>
@@ -79,6 +101,7 @@ onMounted(() => {
 	</div>
 </template>
 
+
 <style lang="scss">
 .dashboard-header {
 	display: flex;
@@ -86,7 +109,7 @@ onMounted(() => {
 	align-items: center;
 	justify-content: space-between;
 	.title {
-	font-size: 27px;
+		font-size: 27px;
 	}
 	button {
 		padding: 10px 10px;
@@ -154,7 +177,7 @@ table.p-datatable-table {
 		}
 		div:nth-child(1){
 		}
-		
+
 		div:nth-child(1){
 		}
 	}

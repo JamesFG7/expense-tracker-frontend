@@ -1,8 +1,8 @@
 <script lang="ts" setup>
     import { ref } from 'vue';
 	import NavBar from "@/components/NavBar.vue";
-	import Transactions from "@/components/dashboard/Transactions.vue";
 	import Summary from "@/components/dashboard/Summary.vue";
+	import TransactionTable from "@/components/dashboard/TransactionTable.vue";
 
 	const active = ref(0);
 	const items = ref([
@@ -20,7 +20,7 @@
 		<Summary />
 	</div>
 	<div v-if="active == 1" class="tabmenu-overlay">
-		<Transactions />
+		<TransactionTable page="transaction"/>
 	</div>
 </template>
 

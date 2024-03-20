@@ -1,129 +1,9 @@
 <script setup lang="ts">
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-import {ref} from "vue";
-
-const confirm = useConfirm();
-const toast = useToast();
-
-const products = [{
-		id: 1,
-		date: "Tuesday, 28 Feb 2023",
-		type: "Expenses",
-		category: "Entertainment",
-		amount: 50,
-	}, {
-		id: 2,
-		date: "Tuesday, 28 Feb 2023",
-		type: "Income",
-		category: "Entertainment",
-		amount: 50,
-}];
-const categories = ref([
-	{ name: 'Entertainment'},
-	{ name: 'Salary'},
-	{ name: 'Food' },
-	{ name: 'Rent' },
-]);
-const date = ref();
-const amount = ref();
-const type = ref();
-const category = ref();
-const updateDialogVisible = ref(false);
-const addDialogVisible = ref(false);
-
-const confirmDelete = (id : number) => {
-	confirm.require({
-		message: 'Do you want to delete this record?',
-		header: 'Danger Zone',
-		icon: 'pi pi-info-circle',
-		rejectLabel: 'Cancel',
-		acceptLabel: 'Delete',
-		rejectClass: 'p-button-secondary p-button-outlined',
-		acceptClass: 'p-button-danger',
-		accept: () => {
-			toast.add({ severity: 'error', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-			console.log(id);
-		},
-	});
-};
+import TransactionTable from "@/components/dashboard/TransactionTable.vue";
 
 </script>
 
 <template>
-	<Toast />
-	<ConfirmDialog></ConfirmDialog>
-	<Dialog v-model:visible="updateDialogVisible" modal header="Update Transaction" :style="{ width: '25rem' }">
-		<template #header>
-			<div class="dialog-header-title">
-				<i class="pi pi-credit-card"></i>
-				<div class="dialog-header-text">Update Transaction</div>
-			</div>
-		</template>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Date</label>
-			<Calendar v-model="date" showIcon iconDisplay="input" placeholder="Select Date"/>
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Amount</label>
-			<InputNumber v-model="amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  />
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Transaction Type</label>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Income" />
-				<label for="type1" class="ml-2">Income</label>
-			</div>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Expenses" />
-				<label for="type1" class="ml-2">Expenses</label>
-			</div>
-		</div>
-		<div class="dialog-input-container">
-			<label for="category" class="dialog-input-label">Category</label>
-			<Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select a Category"/>
-		</div>
-		<template #footer>
-			<Button label="Cancel" outlined severity="primary" @click="updateDialogVisible = false" autofocus />
-			<Button label="Save" severity="primary" @click="updateDialogVisible = false" autofocus />
-		</template>
-	</Dialog><Dialog v-model:visible="addDialogVisible" modal header="Add Transaction" :style="{ width: '25rem' }">
-		<template #header>
-			<div class="dialog-header-title">
-				<i class="pi pi-credit-card"></i>
-				<div class="dialog-header-text">Add Transaction</div>
-			</div>
-		</template>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Date</label>
-			<Calendar v-model="date" showIcon iconDisplay="input" placeholder="Select Date"/>
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Amount</label>
-			<InputNumber v-model="amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  />
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Transaction Type</label>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Income" />
-				<label for="type1" class="ml-2">Income</label>
-			</div>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Expenses" />
-				<label for="type1" class="ml-2">Expenses</label>
-			</div>
-		</div>
-		<div class="dialog-input-container">
-			<label for="category" class="dialog-input-label">Category</label>
-			<Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select a Category"/>
-		</div>
-		<template #footer>
-			<Button label="Cancel" outlined severity="primary" @click="addDialogVisible = false" autofocus />
-			<Button label="Save" severity="primary" @click="addDialogVisible = false" autofocus />
-		</template>
-	</Dialog>
-	
-
 	<div class="dashboard-header">
 		<div class="title">
 		Transaction Summary
@@ -193,38 +73,7 @@ const confirmDelete = (id : number) => {
         </div>
     </div>
 </div>
-
-	<div class="dashboard-header">
-		<div class="title">
-		Transaction History
-		</div>
-	</div>
-	<div class="card">
-		<DataTable size="large" :value="products" tableStyle="min-width: 50rem" lazy>
-			<Column field="date" header="Date"></Column>
-			<Column field="type" header="Type">
-				<template #body="slotProps">
-					<i  v-if="slotProps.data.type === 'Expenses'" class="pi pi-arrow-up type-icon expense"></i>
-					<i  v-else class="pi pi-arrow-down type-icon income"></i>
-					{{ slotProps.data.type}}
-				</template>
-			</Column>
-			<Column field="category" header="Category"></Column>
-			<Column field="amount">
-				<template #header>
-					<div class="header-title">
-						<i class="pi pi-credit-card" style="margin-right: 5px;"></i>
-						<div class="header-text">Amount</div>
-					</div>
-				</template>
-				<template #body="slotProps">
-					<div class="amount" :style="{ color: slotProps.data.type === 'Expenses' ? '#dc2626' : '#059669' }">
-						{{ slotProps.data.type === "Expenses" ? "-" : "+" }}₱{{ slotProps.data.amount}}.00
-					</div>
-				</template>
-			</Column>
-		</DataTable>
-	</div>
+	<TransactionTable page="summary"/>
 </template>
 
 <style lang="scss">

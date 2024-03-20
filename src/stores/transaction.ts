@@ -1,15 +1,30 @@
-import { ref} from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
+
 export const useTransactionStore = defineStore('transaction', () => {
+    const transactionPlaceholder = ref({id: null, date: null, type: null, amount: null, category: null});
     const dialogVisibility = ref(false);
     const transactions = ref();
     const categories = ref([
-        { name: 'Entertainment'},
-        { name: 'Salary'},
-        { name: 'Food' },
-        { name: 'Rent' },
+        'Food',
+        'Transportation',
+        'Housing',
+        'Utilities',
+        'Healthcare',
+        'Entertainment',
+        'Personal Care',
+        'Education',
+        'Debts and Loans',
+        'Miscellaneous',
     ]);
+    const isInputValid = ref((transactionPlaceholder.value.date !== null && transactionPlaceholder.value.type !== null && transactionPlaceholder.value.amount !== null && transactionPlaceholder.value.category !== null ))
+
+    function emptyTransactionPlaceholder(): void {
+        transactionPlaceholder.value = {id: null, date: null, type: null, amount: null, category: null}
+    }
+
+
     function setTransactions() {
         transactions.value =  [{
             id: 1,
@@ -25,11 +40,9 @@ export const useTransactionStore = defineStore('transaction', () => {
             amount: 50000,
         }];
     }
-
     function toggleVisibility(): void {
         dialogVisibility.value = !dialogVisibility.value;
     }
-
     function addTransaction(newTransaction: any): void {
         transactions.value.push(newTransaction);
         toggleVisibility();
@@ -45,5 +58,5 @@ export const useTransactionStore = defineStore('transaction', () => {
         transactions.value = transactions.value.filter((transaction: { id: number }) => transaction.id !== id);
         //do delete request
     }
-    return {dialogVisibility, transactions, categories, toggleVisibility, setTransactions, addTransaction, deleteTransaction, updateTransaction };
+    return {transactions, categories, isInputValid, transactionPlaceholder, emptyTransactionPlaceholder, dialogVisibility, toggleVisibility, setTransactions, addTransaction, deleteTransaction, updateTransaction };
 })
