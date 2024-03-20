@@ -13,13 +13,11 @@ const usernameChange = () => {
     isUnameInvalid.value = !user.value.username;
     submitButtonDisabled.value = (user.value.username.length < 1 || user.value.password.length < 1);
 }
-
 const passwordChange = () => {
     isPasswordInvalid.value = !user.value.password;
     submitButtonDisabled.value = (user.value.username.length < 1 || user.value.password.length < 1);
     
 }
-
 const submitForm = () => {
     console.log(user.value);
     if(user.value.username !== "admin" && user.value.password !== "admin"){

@@ -1,40 +1,15 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import {compile, computed, ref} from "vue";
+import {onMounted, ref} from "vue";
 import TransactionDialog from "./TransactionDialog.vue";
 import { useTransactionStore } from '@/stores/transaction';
 
 const confirm = useConfirm();
 const toast = useToast();
 const transaction = useTransactionStore()
-
-
-
-const products = [{
-		id: 1,
-		date: "Tuesday, 28 Feb 2023",
-		type: "Expenses",
-		category: "Entertainment",
-		amount: 200,
-	}, {
-		id: 2,
-		date: "Tuesday, 28 Feb 2023",
-		type: "Income",
-		category: "Entertainment",
-		amount: 50000,
-}];
-const categories = ref([
-	{ name: 'Entertainment'},
-	{ name: 'Salary'},
-	{ name: 'Food' },
-	{ name: 'Rent' },
-]);
-const handleEdit = (clickedId: number) => {
-    id.value = clickedId;
-    transaction.toggleVisibility();
-};
 const id = ref<number | undefined>();
+
 const confirmDelete = (id : number) => {
 	confirm.require({
 		message: 'Do you want to delete this record?',
@@ -46,10 +21,14 @@ const confirmDelete = (id : number) => {
 		acceptClass: 'p-button-danger',
 		accept: () => {
 			toast.add({ severity: 'error', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-			console.log(id);
+			transaction.deleteTransaction(id)
 		},
 	});
 };
+
+onMounted(() => {
+	transaction.setTransactions();
+})
 
 </script>
 
@@ -65,7 +44,7 @@ const confirmDelete = (id : number) => {
 	
 	</div>
 	<div class="card">
-		<DataTable size="large" :value="products" tableStyle="min-width: 50rem" lazy>
+		<DataTable size="large" :value="transaction.transactions" tableStyle="min-width: 50rem" lazy>
 			<Column field="date" header="Date"></Column>
 			<Column field="type" header="Type">
 				<template #body="slotProps">

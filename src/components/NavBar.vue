@@ -1,28 +1,18 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import ThemeToggler from "@/components/ThemeToggler.vue";
+import {onMounted, ref} from "vue";
+import ThemeToggler  from "@/components/ThemeToggler.vue";
+import {useThemeStore} from "@/stores/theme";
 
+const theme = useThemeStore()
 const op = ref();
 const username = ref("James Doe");
-const members = ref([
-  { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
-  { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
-  { name: 'Ioni Bowcher', image: 'ionibowcher.png', email: 'ioni@email.com', role: 'Viewer' }
-]);
-
-const toggled = (event) => {
+const toggled = (event: Event) => {
   op.value.toggle(event);
 }
-
-const items = ref([
-	{ label: 'Dashboard', icon: 'pi pi-home' },
-	{ label: 'Transactions', icon: 'pi pi-chart-line' },
-	{ label: 'Products', icon: 'pi pi-list' },
-	{ label: 'Messages', icon: 'pi pi-inbox' }
-]);
+onMounted(() => {
+	theme.toggleTheme();
+})
 </script>
-
-
 <template>
 	<div class="card">
 		<Menubar >
@@ -41,7 +31,7 @@ const items = ref([
 			<template #end>
 				<div class="flex align-items-center gap-2">
 					<div class="card flex justify-content-center">
-						<Button @click="toggled" outlined severity="conrast" class="account-button">
+						<Button @click="toggled" outlined severity="contrast" class="account-button">
 							<div class="account-image-container">
 								<img class="account-image" src="https://this-person-does-not-exist.com/img/avatar-gen115dd0b681e323399203b0bc9ce5c4b1.jpg" />
 							</div>
