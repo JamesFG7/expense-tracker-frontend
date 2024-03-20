@@ -5,7 +5,7 @@
  - [x] ~~Margin and size of header in transaction history~~
  - [x] ~~Transaction type conditional statement for up and down icon~~
  - [x] ~~Transaction amount conditional statement for negative and positive. value = (type === "expenses")  ?  -val  : val;~~
- - [ ] Transaction type radio button in dialog
+ - [x] ~~~ Transaction type radio button in dialog ~~~
 
 
 

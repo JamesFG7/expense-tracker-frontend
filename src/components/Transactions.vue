@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import {ref} from "vue";
+import {compile, computed, ref} from "vue";
 import TransactionDialog from "./TransactionDialog.vue";
 import { useTransactionStore } from '@/stores/transaction';
 
@@ -30,13 +30,11 @@ const categories = ref([
 	{ name: 'Food' },
 	{ name: 'Rent' },
 ]);
-const date = ref();
-const amount = ref();
-const type = ref();
-const category = ref();
-const updateDialogVisible = ref(false);
-const addDialogVisible = ref(false);
-
+const handleEdit = (clickedId: number) => {
+    id.value = clickedId;
+    transaction.toggleVisibility();
+};
+const id = ref<number | undefined>();
 const confirmDelete = (id : number) => {
 	confirm.require({
 		message: 'Do you want to delete this record?',
@@ -58,47 +56,12 @@ const confirmDelete = (id : number) => {
 <template>
 	<Toast />
 	<ConfirmDialog></ConfirmDialog>
-	<Dialog v-model:visible="updateDialogVisible" modal header="Update Transaction" :style="{ width: '25rem' }">
-		<template #header>
-			<div class="dialog-header-title">
-				<i class="pi pi-credit-card"></i>
-				<div class="dialog-header-text">Update Transaction</div>
-			</div>
-		</template>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Date</label>
-			<Calendar v-model="date" showIcon iconDisplay="input" placeholder="Select Date"/>
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Amount</label>
-			<InputNumber v-model="amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  />
-		</div>
-		<div class="dialog-input-container">
-			<label for="username" class="dialog-input-label">Transaction Type</label>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Income" />
-				<label for="type1" class="ml-2">Income</label>
-			</div>
-			<div class="flex align-items-center">
-				<RadioButton v-model="type" inputId="type1" name="pizza" value="Expenses" />
-				<label for="type1" class="ml-2">Expenses</label>
-			</div>
-		</div>
-		<div class="dialog-input-container">
-			<label for="category" class="dialog-input-label">Category</label>
-			<Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select a Category"/>
-		</div>
-		<template #footer>
-			<Button label="Cancel" outlined severity="primary" @click="updateDialogVisible = false" autofocus />
-			<Button label="Save" severity="primary" @click="updateDialogVisible = false" autofocus />
-		</template>
-	</Dialog>
-	<TransactionDialog :id="2" :visibility="true"/>
+	<TransactionDialog :id='id'/>
 	<div class="dashboard-header">
 		<div class="title">
 		Transaction History
 		</div>
-		<Button label="Add Transaction" icon="pi pi-plus" @click="addDialogVisible = true" />
+		<Button label="Add Transaction" icon="pi pi-plus" @click="transaction.toggleVisibility(); id = undefined;" />
 	
 	</div>
 	<div class="card">
@@ -128,7 +91,7 @@ const confirmDelete = (id : number) => {
 			<Column field="action" header="Actions">
 				<template #body="slotProps">
 					<ButtonGroup>
-						<Button @click="updateDialogVisible=true" label="Edit" icon="pi pi-pencil" severity="success" />
+						<Button  @click="transaction.toggleVisibility(); id = slotProps.data.id;"  label="Edit" icon="pi pi-pencil" severity="success" />
 						<Button @click="confirmDelete(slotProps.data.id)" label="Delete" icon="pi pi-trash"  severity="danger"/>
 					</ButtonGroup>
 				</template>
@@ -207,8 +170,8 @@ table.p-datatable-table {
 		padding: 0;
 		div {
 			width: 50%;
-			background: none;
-			border: none;
+			//background: none;
+			//border: none;
 		}
 		div:nth-child(1){
 		}

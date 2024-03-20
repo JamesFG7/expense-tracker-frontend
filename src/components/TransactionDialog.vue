@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { useTransactionStore } from '@/stores/transaction';
-import { ref } from 'vue'
-const transactionProps = defineProps<{id?:number, visibility:boolean}>();
+import { computed, ref } from 'vue'
+const transactionProps = defineProps<{id?: number}>();
 
 const transaction = useTransactionStore()
-console.log(transaction.dialogVisibility);
-
+const isAdd = computed(() => transactionProps.id === undefined)
 const date = ref();
 const amount = ref();
 const type = ref();
@@ -17,13 +16,19 @@ const categories = ref([
 	{ name: 'Food' },
 	{ name: 'Rent' },
 ]);
+
+function saveFunction() {
+    transaction.toggleVisibility();
+    //handle pinia action -> wherein the action will send the request. (transactionUpdate) 
+    //or remove this function and call the action inline @click
+}
 </script>
 <template>    
-    <Dialog v-model:visible="transaction.dialogVisibility" modal header="Add Transaction" :style="{ width: '25rem' }">
+    <Dialog v-model:visible="transaction.dialogVisibility" modal :header="isAdd ? 'Add Transaction' : 'Update Transaction'" :style="{ width: '25rem' }">
         <template #header>
             <div class="dialog-header-title">
                 <i class="pi pi-credit-card"></i>
-                <div class="dialog-header-text">Add Transaction</div>
+                <div class="dialog-header-text">{{ transactionProps.id === undefined ? "Add" : "Update" }} Transaction </div>
             </div>
         </template>
         <div class="dialog-input-container">
@@ -43,8 +48,8 @@ const categories = ref([
             <Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select a Category"/>
         </div>
         <template #footer>
-            <Button label="Cancel" outlined severity="primary" @click="addDialogVisible = false" autofocus />
-            <Button label="Save" severity="primary" @click="addDialogVisible = false" autofocus />
+            <Button label="Cancel" outlined severity="primary" @click="transaction.toggleVisibility()" autofocus />
+            <Button label="Save" severity="primary" @click="saveFunction()" autofocus />
         </template>
     </Dialog>
 </template>
