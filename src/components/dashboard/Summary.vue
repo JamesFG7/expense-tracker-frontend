@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TransactionTable from "@/components/dashboard/TransactionTable.vue";
-
 </script>
 
 <template>

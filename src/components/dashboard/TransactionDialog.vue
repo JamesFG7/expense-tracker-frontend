@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useTransactionStore } from '@/stores/transaction';
-import {computed, ref} from 'vue'
+import {computed} from 'vue'
 import {useToast} from "primevue/usetoast";
 
 
@@ -8,7 +8,7 @@ const transactionProps = defineProps<{id?: number}>();
 const toast = useToast();
 const transaction = useTransactionStore()
 const isAdd = computed(() => transactionProps?.id === undefined)
-const isInputValid = ref(transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null )
+
 const addTransaction = () => {
 	if (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null ) {
 		transaction.addTransaction(transaction.transactionPlaceholder);

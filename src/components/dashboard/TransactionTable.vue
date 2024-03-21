@@ -12,12 +12,12 @@ const confirm = useConfirm();
 const toast = useToast();
 const transaction = useTransactionStore()
 const id = ref<number | undefined>();
-
+const leadingDigits = /\d(?=(\d{3})+\.)/g;
 
 function formatDate (date: Date) : string {
 	return dateFormat(date, "dddd, dd mmm yyyy");
 }
-const confirmDelete = (id : number) => {
+const confirmDelete = (id: number) => {
 	confirm.require({
 		message: 'Do you want to delete this record?',
 		header: 'Danger Zone',
@@ -85,7 +85,7 @@ onMounted(() => {
 				</template>
 				<template #body="slotProps">
 					<div class="amount" :style="{ color: slotProps.data.type === 'Expenses' ? '#dc2626' : '#059669' }">
-						{{ slotProps.data.type === "Expenses" ? "-" : "+" }}₱{{ slotProps.data.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}}
+						{{ slotProps.data.type === "Expenses" ? "-" : "+" }}₱{{ slotProps.data.amount.toFixed(2).replace(leadingDigits, '$&,')}}
 					</div>
 				</template>
 			</Column>

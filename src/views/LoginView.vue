@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useToast } from "primevue/usetoast";
 import ThemeToggler from '@/components/ThemeToggler.vue';
+import router from '@/router';
 
 const toast = useToast();
 const user = ref({username: "", password: ""}); 
@@ -25,6 +26,7 @@ const submitForm = () => {
     }
     else {
         toast.add({ severity: 'success', summary: 'Success', detail: 'Redirecting you to homepage', life: 30000 });
+        setTimeout(() => router.push({ name: 'dashboard'}), 1000);
     }
 }
 
@@ -64,7 +66,7 @@ const submitForm = () => {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .error-message {
     color: #fca5a5;
