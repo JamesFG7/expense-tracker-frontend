@@ -9,8 +9,8 @@ const toast = useToast();
 const transaction = useTransactionStore()
 const isAdd = computed(() => transactionProps?.id === undefined)
 
-const addTransaction = () => {
-	if (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null ) {
+function addTransaction(): void{
+	if (isFormDataValid()) {
 		transaction.addTransaction(transaction.transactionPlaceholder);
 		toast.add({ severity: 'success', summary: 'Success!', detail: 'Transaction successfully added', life: 3000 });
 		transaction.emptyTransactionPlaceholder();
@@ -19,8 +19,8 @@ const addTransaction = () => {
 		toast.add({ severity: 'error', summary: 'Error', detail: 'Some fields are required', life: 3000 });
 	}
 }
-const updateTransaction = () => {
-	if (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null ) {
+function updateTransaction(): void{
+	if (isFormDataValid()) {
 		transaction.updateTransaction(transaction.transactionPlaceholder);
 		toast.add({ severity: 'success', summary: 'Success!', detail: 'Transaction successfully updated', life: 3000 })
 		transaction.emptyTransactionPlaceholder();
@@ -29,9 +29,9 @@ const updateTransaction = () => {
 		toast.add({ severity: 'error', summary: 'Error', detail: 'Some fields are required', life: 3000 });
 	}
 }
-const test = () => {
-	console.log(transaction.transactions);
 
+function isFormDataValid(): boolean{
+	return (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null);
 }
 
 </script>
@@ -50,7 +50,7 @@ const test = () => {
         </div>
         <div class="dialog-input-container">
             <label for="username" class="dialog-input-label">Amount</label>
-            <InputNumber v-model="transaction.transactionPlaceholder.amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  @input="test" />
+            <InputNumber v-model="transaction.transactionPlaceholder.amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount" />
         </div>
         <div class="dialog-input-container">
             <label for="username" class="dialog-input-label">Transaction Type</label>
