@@ -119,7 +119,23 @@ onMounted(() => {
 .type-icon {
 	padding: 5.5px;
 	font-size: 10.5px;
-	background: red;
+	color: white;
+	border-radius: 1000px;
+	margin-right: 5px
+}
+
+.expense {
+	padding: 5.5px;
+	font-size: 10.5px;
+	background: #dc2626;
+	color: white;
+	border-radius: 1000px;
+	margin-right: 5px
+}
+.income {
+	padding: 5.5px;
+	font-size: 10.5px;
+	background:#059669;
 	color: white;
 	border-radius: 1000px;
 	margin-right: 5px
@@ -181,16 +197,5 @@ table.p-datatable-table {
 		div:nth-child(1){
 		}
 	}
-}
-.p-dialog-footer {
-	padding: 1rem 1.5rem 1.5rem 1.5rem;
-	button {
-		width: 100%;
-	}
-}
-.p-dropdown {
-	width: 100%;
-	background: none;
-	margin: 10px 0 7px 0;
 }
 </style>
