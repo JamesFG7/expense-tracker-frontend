@@ -4,13 +4,10 @@ import App from './App.vue'
 import router from './router'
 import { plugin, defaultConfig } from '@formkit/vue'
 
-
 import './assets/main.css';
 import 'primeicons/primeicons.css';
 import "primeflex/primeflex.css";
 import './assets/base.scss';
-
-
 
 import PrimeVue from "primevue/config";
 import AutoComplete from 'primevue/autocomplete';
@@ -235,5 +232,6 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, { ripple: true    });
 app.use(plugin, defaultConfig);
+app.use(ConfirmationService)
 
 app.mount('#app')

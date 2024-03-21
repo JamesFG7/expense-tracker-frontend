@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useToast } from "primevue/usetoast";
 import ThemeToggler from '@/components/ThemeToggler.vue';
+import router from '@/router';
 
 const toast = useToast();
 const user = ref({username: "", password: "", password_confirmation: ""}); 
@@ -32,8 +33,8 @@ const submitForm = () => {
         toast.add({ severity: 'error', summary: 'Invalid Input', detail: 'Invalid Username and Password', life: 30000 });
     }
     else {
-        
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Redirecting you to homepage', life: 30000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'You can now login', life: 30000 });
+        setTimeout(() => router.push({ name: 'login'}), 1000);
     }
 }
 
@@ -41,7 +42,11 @@ const submitForm = () => {
 </script>
 
 <template>
-<ThemeToggler />
+    <div class="flex-item-right">
+        <div class="theme-toggler-container">
+            <ThemeToggler />
+        </div>
+    </div>
 <Toast />
 <div class="center">
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
@@ -74,7 +79,7 @@ const submitForm = () => {
 </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .error-message {
     color: #fca5a5;
     margin-top: 0.5em;
@@ -89,5 +94,13 @@ const submitForm = () => {
 .center {
     display: flex;
     justify-content: center;
+}
+.theme-toggler-container {
+    padding: 15px 15px;
+    margin: 10px;
+    background: var(--text-color);
+    color:var(--surface-card);
+    width: fit-content;
+    border-radius: 10px;
 }
 </style>
