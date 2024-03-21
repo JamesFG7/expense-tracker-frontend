@@ -16,7 +16,7 @@ const leadingDigits = /\d(?=(\d{3})+\.)/g;
 function formatDate (date: Date) : string {
 	return dateFormat(date, "dddd, dd mmm yyyy");
 }
-const confirmDelete = (id: number) => {
+function confirmDelete(id: number): void{
 	confirm.require({
 		message: 'Do you want to delete this record?',
 		header: 'Danger Zone',
@@ -31,7 +31,7 @@ const confirmDelete = (id: number) => {
 		},
 	});
 };
-const updateButton = (idParam: number) => {
+function updateButton(idParam: number): void{
 	const transactionFound = transaction.transactions[transaction.transactions.findIndex((transaction: { id: number }) => transaction.id === idParam)];
 	if(transactionFound){
 		transaction.transactionPlaceholder = {...transactionFound};
@@ -43,7 +43,7 @@ const updateButton = (idParam: number) => {
 	}
 }
 
-const addButton = () => {
+function addButton(): void{
 	transaction.emptyTransactionPlaceholder();
 	id.value = undefined;
 	transaction.toggleVisibility();
@@ -101,6 +101,11 @@ onMounted(() => {
 					</ButtonGroup>
 				</template>
 			</Column>
+			<template #empty>
+				<div class="empty">
+					You have no Transactions.
+				</div>
+			</template>
 		</DataTable>
 	</div>
 </template>
@@ -154,6 +159,14 @@ table.p-datatable-table {
 				color: var(--surface-card);
 			}
 		}
+	}
+	.empty {
+		filter: brightness(0.4);
+		display: flex;
+		justify-content: center;
+		padding: 20px 0;
+		font-weight: 300;
+		font-size: 23px;
 	}
 }
 .header-title {

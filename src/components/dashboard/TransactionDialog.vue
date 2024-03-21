@@ -3,7 +3,6 @@ import { useTransactionStore } from '@/stores/transaction';
 import {computed} from 'vue'
 import {useToast} from "primevue/usetoast";
 
-
 const transactionProps = defineProps<{id?: number}>();
 const toast = useToast();
 const transaction = useTransactionStore()

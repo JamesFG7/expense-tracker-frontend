@@ -2,12 +2,19 @@
 import {onMounted, ref} from "vue";
 import ThemeToggler  from "@/components/ThemeToggler.vue";
 import {useThemeStore} from "@/stores/theme";
+import {useUserStore} from "@/stores/user";
+import router from "@/router";
 
-const theme = useThemeStore()
+const theme = useThemeStore();
+const user = useUserStore();
 const op = ref();
-const username = ref("James Doe");
-const toggled = (event: Event) => {
+
+const username = ref(user.user.first_name + " " +user.user.last_name);
+function toggled(event: Event): void{
   op.value.toggle(event);
+}
+function logout() {
+	router.push({name:'login'});
 }
 onMounted(() => {
 	theme.toggleTheme();
@@ -48,11 +55,9 @@ onMounted(() => {
 										<i class="pi pi-cog"></i>Settings
 									</li>
 								</router-link>
-								<router-link to="/account" class="link">
-									<li>
+									<li @click="logout" class="logout">
 										<i class="pi pi-sign-out"></i>Logout
 									</li>
-								</router-link>
 							</ul>
 						</OverlayPanel>
 					</div>
@@ -93,7 +98,6 @@ onMounted(() => {
     margin-right: -5px;
   }
 }
-
 ul {
 	list-style-type: none;
 	padding: 5px 10px;
@@ -111,5 +115,8 @@ ul {
 		}
 
   }
+}
+.logout {
+	cursor: pointer;
 }
 </style>
