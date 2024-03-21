@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useTransactionStore } from '@/stores/transaction';
-import {computed, onMounted, ref} from 'vue'
+import {computed, ref} from 'vue'
 import {useToast} from "primevue/usetoast";
 
 
@@ -8,7 +8,7 @@ const transactionProps = defineProps<{id?: number}>();
 const toast = useToast();
 const transaction = useTransactionStore()
 const isAdd = computed(() => transactionProps?.id === undefined)
-
+const isInputValid = ref(transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null )
 const addTransaction = () => {
 	if (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null ) {
 		transaction.addTransaction(transaction.transactionPlaceholder);
@@ -21,7 +21,7 @@ const addTransaction = () => {
 }
 const updateTransaction = () => {
 	if (transaction.transactionPlaceholder.date !== null && transaction.transactionPlaceholder.type !== null && transaction.transactionPlaceholder.amount !== null && transaction.transactionPlaceholder.category !== null ) {
- 		transaction.updateTransaction(transaction.transactionPlaceholder);
+		transaction.updateTransaction(transaction.transactionPlaceholder);
 		toast.add({ severity: 'success', summary: 'Success!', detail: 'Transaction successfully updated', life: 3000 })
 		transaction.emptyTransactionPlaceholder();
 	}
@@ -29,13 +29,10 @@ const updateTransaction = () => {
 		toast.add({ severity: 'error', summary: 'Error', detail: 'Some fields are required', life: 3000 });
 	}
 }
+const test = () => {
+	console.log(transaction.transactions);
 
-onMounted(() => {
-	if(transactionProps.id !== undefined){
-		transaction.transactionPlaceholder = transaction.transactions[transaction.transactions.findIndex((transaction: { id: number }) => transaction.id === transactionProps.id)]
-		console.log(transaction.transactions[transaction.transactions.findIndex((transaction: { id: number }) => transaction.id === transactionProps.id)])
-	}
-})
+}
 
 </script>
 <template>
@@ -53,7 +50,7 @@ onMounted(() => {
         </div>
         <div class="dialog-input-container">
             <label for="username" class="dialog-input-label">Amount</label>
-            <InputNumber v-model="transaction.transactionPlaceholder.amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  />
+            <InputNumber v-model="transaction.transactionPlaceholder.amount" inputId="currency-ph" mode="currency" currency="PHP" locale="en-PH"  placeholder="Input Amount"  @input="test" />
         </div>
         <div class="dialog-input-container">
             <label for="username" class="dialog-input-label">Transaction Type</label>
@@ -72,5 +69,17 @@ onMounted(() => {
     </Dialog>
 </template>
 
-<style>
+<style lang="scss">
+
+.p-dialog-footer {
+	padding: 1rem 1.5rem 1.5rem 1.5rem;
+	button {
+		width: 100%;
+	}
+}
+.p-dropdown {
+	width: 100%;
+	background: none;
+	margin: 10px 0 7px 0;
+}
 </style>
