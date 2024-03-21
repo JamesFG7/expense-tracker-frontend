@@ -10,7 +10,7 @@ const toast = useToast();
 const transaction = useTransactionStore()
 const id = ref<number | undefined>();
 
-const confirmDelete = (id : number) => {
+const confirmDelete = (id: number) => {
 	confirm.require({
 		message: 'Do you want to delete this record?',
 		header: 'Danger Zone',

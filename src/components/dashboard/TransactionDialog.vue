@@ -9,7 +9,6 @@ const transactionValue = ref({id: '', date: '', type: '', amount: '', category: 
 
 </script>
 <template>
-	<Button label="Update" severity="primary"  @click="test()" autofocus />
     <Dialog v-model:visible="transaction.dialogVisibility" modal :header="isAdd ? 'Add Transaction' : 'Update Transaction'" :style="{ width: '25rem' }">
         <template #header>
             <div class="dialog-header-title">
